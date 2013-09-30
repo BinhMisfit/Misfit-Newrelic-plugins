@@ -11,14 +11,19 @@
 
 
 include_recipe "python::pip"
-p "Aaaaaaaaaaaaaaaaaaaa: node["newrelic"]["license_key"].nil?: #{node["newrelic"]["license_key"]}"
+p "Aaaaaaaaaaaaaaaaaaaa:  #{node["newrelic"]["license_key"]}"
 if node["newrelic"]["license_key"].nil?
+  
+  Chef::Log.debug("^^^ Could not install these plugins. Please put your Newrelic license key in the run-list.")
+  
+else
   
   group node["newrelic"]["group"]  do
     action :create
   end
 
   user node["newrelic"]["user"] do
+    gid node["newrelic"]["group"]
     action :create
   end
 
@@ -88,7 +93,6 @@ if node["newrelic"]["license_key"].nil?
     sudo /etc/init.d/newrelic-sysmond start
     EOH
   end
-else
-  Chef::Log.debug("^^^ Could not install these plugins. Please put your Newrelic license key in the run-list.")
+
 end
 
