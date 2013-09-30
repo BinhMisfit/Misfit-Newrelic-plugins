@@ -11,7 +11,7 @@
 
 
 include_recipe "python::pip"
-
+p "Aaaaaaaaaaaaaaaaaaaa: node["newrelic"]["license_key"].nil?: #{node["newrelic"]["license_key"]}"
 if node["newrelic"]["license_key"].nil?
   
   group node["newrelic"]["group"]  do
