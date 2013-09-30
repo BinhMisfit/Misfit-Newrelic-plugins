@@ -1,0 +1,146 @@
+%YAML 1.2
+---
+#File automatically edited by Chef
+
+Application:
+  license_key: <%= @license_key %>
+  poll_interval: <%= @poll_interval %>
+
+  #apache_httpd:
+  #  name: hostname
+  #  host: localhost
+  #  port: 80
+  #  path: /server-status
+
+  #couchdb:
+  #  name: localhost
+  #  host: localhost
+  #  port: 5984
+
+  #edgecast:
+  #  name: My Edgecase Account
+  #  account: YOUR_ACCOUNT_#
+  #  token: YOUR_API_TOKEN
+
+  memcached:
+    name: <%= @memcached_name %>
+    host: <%= @memcached_host%>
+    port: <%= @memcached_port%>
+
+  #mongodb:
+  #  name: hostname
+  #  host: localhost
+  #  port: 27017
+  #  username: user # [OPTIONAL]
+  #  password: pass # [OPTIONAL]
+  #  databases:
+  #  - test
+  #  - yourdbname
+
+  #nginx:
+  #  name: hostname
+  #  host: localhost
+  #  port: 80
+  #  path: /nginx_stub_status
+
+  # pgbouncer:
+  #   host: localhost
+  #   port: 6000
+  #   user: stats
+
+  # postgresql:
+  #   host: localhost
+  #   port: 5432
+  #   user: postgres
+  #   dbname: postgres
+
+  #rabbitmq:
+  #  name: rabbitmq@localhost
+  #  host: localhost
+  #  port: 15672
+  #  username: guest
+  #  password: guest
+
+  #redis:
+  #  - name: localhost
+  #    host: localhost
+  #    port: 6379
+  #    db_count: 16
+  #    password: foo # [OPTIONAL]
+  #  - name: localhost
+  #    host: localhost
+  #    port: 6380
+  #    db_count: 16
+  #    password: foo # [OPTIONAL]
+
+  #riak:
+  #  name: localhost
+  #  host: node0.riak0.scs.mtmeprod.net
+  #  port: 8098
+  
+
+  #uwsgi:
+  #  name: localhost
+  #  host: localhost
+  #  port: 1717
+  #  path: /path/to/unix/socket
+
+<% unless @mongodb.nil? -%>
+	mongodb:
+		name: <%= @hostname %>
+		host: <%= @mongodb["host"] || 'localhost' %>
+		<% if @mongodb.has_key?("username") && @mongodb["username"] -%>
+		username: <%= @mongodb["username"] %>
+		<% end -%>
+		<% if @mongodb.has_key?("username") && @mongodb["username"] -%>
+		password: <%= @mongodb["username"] %>
+		<% end -%>
+		port: <%= @mongodb["port"] || '27017' %>
+		databases:
+		<% @mongodb["databases"].each do |db| -%>
+		- <%= db %>
+		<% end -%>
+<% end -%>
+
+<% unless @nginx.nil? -%>
+	nginx:
+		name: <%= @hostname %>
+		host: <%= @nginx["host"] || 'localhost' %>
+		port: <%= @nginx["port"] || '80' %>
+		path: <%= @nginx["path"] || '/nginx_stub_status' %>
+<% end -%>
+
+<% unless @postgresql.nil? -%>
+	postgresql:
+		name: <%= @hostname %>
+		host: <%= @postgresql["host"] || 'localhost' %>
+		port: <%= @postgresql["port"] || '5432' %>
+		user: <%= @postgresql["user"] || 'postgres' %>
+		dbname: <%= @postgresql["dbname"] || 'postgres' %>
+<% end -%>
+
+
+Daemon:
+  user: <%= @user %>
+  pidfile: <%= @pid_file %>
+
+Logging:
+  formatters:
+    verbose:
+      format: '%(levelname) -10s %(asctime)s %(process)-6d %(processName) -15s %(threadName)-10s %(name) -45s %(funcName) -25s L%(lineno)-6d: %(message)s'
+  handlers:
+    file:
+      class : logging.handlers.RotatingFileHandler
+      formatter: verbose
+      filename: <%= @log_file %>
+      maxBytes: 10485760
+      backupCount: 3
+  loggers:
+    newrelic_plugin_agent:
+      level: INFO
+      propagate: True
+      handlers: [console, file]
+    requests:
+      level: ERROR
+      propagate: True
+      handlers: [console, file]
