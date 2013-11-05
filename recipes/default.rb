@@ -67,6 +67,9 @@ else
       :memcached_name => node["newrelic"]["memcached"]["memcached_name"],
       :memcached_host => node["newrelic"]["memcached"]["memcached_host"],
       :memcached_port => node["newrelic"]["memcached"]["memcached_port"],
+      :redis_name => node["newrelic"]["redis"]["redis_name"],
+      :redis_host => node["newrelic"]["redis"]["redis_host"],
+      :redis_port => node["newrelic"]["redis"]["redis_port"],
   		:nginx => node["newrelic"]["nginx"],
   		:postgresql => node["newrelic"]["postgresql"],
   		:redis => node["newrelic"]["redis"]

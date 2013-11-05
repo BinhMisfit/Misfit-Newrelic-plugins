@@ -17,3 +17,10 @@ default["newrelic"]["config_file"] = "#{newrelic["config_dir"]}/newrelic_plugin_
 default["newrelic"]["memcached"]["memcached_name"] = "localhost"
 default["newrelic"]["memcached"]["memcached_host"] = "127.0.0.1"
 default["newrelic"]["memcached"]["memcached_port"] = 11211
+
+
+########################################### memcached plugins
+
+default["newrelic"]["redis"]["redis_name"] = "localhost"
+default["newrelic"]["redis"]["redis_host"] = "127.0.0.1"
+default["newrelic"]["redis"]["redis_port"] = 6379

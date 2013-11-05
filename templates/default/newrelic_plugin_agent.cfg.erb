@@ -60,7 +60,12 @@ Application:
   #  port: 15672
   #  username: guest
   #  password: guest
-
+  
+  redis:
+    name: <%= @redis_name %>
+    host: <%= @redis_host%>
+    port: <%= @redis_port%>
+  
   #redis:
   #  - name: localhost
   #    host: localhost
